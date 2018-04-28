@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>"Snake Game"</title>
+</head>
+<body>
+<canvas id="canvas1" width="600" height="600" style="border:1px solid #000000;"></canvas>
+
+<script type="application/javascript" language="javascript">
+var canvas= document.getElementById("canvas1");
+var ctx= canvas.getContext("2d");
+var x=40;
+var y=40;
+var speed=10;
+var spdx=speed;
+var spdy=0;
+var score=0;
+var speed=10;
+var length=1;
+var pos="right";
+var counter=0;
+var Spd=100;
+var difficulty=40;
+foodx=Math.floor(Math.random() * ((canvas.width-speed)/10))*speed;
+foody=Math.floor(Math.random() * ((canvas.height-speed)/10))*speed;
+var img = document.getElementById("background");
+
+function make2DArray(rows,cols)
+{
+ var arr= new Array(rows);
+ for(i=0;i<rows;i++)
+     {
+	   arr[i]= new Array(cols);
+	   }
+ return arr;
+}
+function restart()
+{
+  x=40;
+  y=40;
+  speed=10;
+  spdx=speed;
+  spdy=0;
+  score=0;
+  speed=10;
+  length=1;
+  pos="right";
+  counter=0;
+  Spd=100;
+  difficulty=40;
+
+}
+
+var screen=make2DArray(canvas.width/speed,canvas.width/speed);
+
+  for(i=0;i<canvas.width/speed;i++)
+  {
+   for(j=0;j<canvas.width/speed;j++)
+    {
+    screen[i][j]=0;
+    }
+  }
+
+
+document.addEventListener('keydown', function(event)
+  {
+
+    if (event.code == 'KeyW')
+    {
+    if (pos!="down")
+   {
+     spdx=0;
+	   spdy=-speed;
+	   pos="up";
+   }
+    }
+
+    if (event.code == 'KeyS') {
+    if (pos!="up")
+	{spdx=0;
+	spdy=+speed;
+	pos="down";}
+  }
+      if (event.code == 'KeyA') {
+    if (pos!="right")
+	{spdx=-speed;
+	spdy=0;
+	pos="left";}
+  }
+
+    if (event.code == 'KeyD') {
+    if (pos!="left")
+	{spdx=+speed;
+	spdy=0;
+	pos="right";}
+  }
+
+ })
+
+
+
+function draw()
+{
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  ctx.fillStyle="grey";
+  ctx.fillRect(0,0,canvas.width,canvas.height)
+  ctx.fill;
+
+  if (x>canvas.width-speed || x<0 || y>canvas.height-10 || y<0)
+{
+  ctx.fillStyle="grey";
+  ctx.fillRect(0,0,canvas.width,canvas.height)
+  ctx.fill;
+ alert("Score:"+score);
+ restart();
+ foodx=Math.floor(Math.random() * ((canvas.width-speed)/10))*speed;
+ foody=Math.floor(Math.random() * ((canvas.height-speed)/10))*speed;
+}
+  for  (i=0;i<canvas.width/speed;i++)
+   {
+    for (j=0;j<canvas.width/speed;j++)
+    {
+    if (screen[i][j]>0)
+      { ctx.beginPath();
+        ctx.strokeStyle="red";
+        ctx.rect(i*speed,j*speed,10,10);
+        ctx.stroke();
+      }
+    }
+  }
+
+
+  if(screen[x/speed][y/speed]>0){
+   alert("Score:"+score);
+   x=40;
+   y=40;
+   foodx=Math.floor(Math.random() * ((canvas.width-speed)/10))*speed;
+   foody=Math.floor(Math.random() * ((canvas.height-speed)/10))*speed;
+   spdx=speed; spdy=0; pos="right";}
+
+  ctx.beginPath();
+  ctx.strokeStyle="red";
+	ctx.rect(x,y,10,10);
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.fillStyle="green";
+	ctx.fillRect(foodx,foody,10,10);
+  ctx.fill();
+
+
+  for  (i=0;i<canvas.width/speed;i++)
+   {
+    for (j=0;j<canvas.width/speed;j++)
+    {
+       if(screen[i][j]>0){screen[i][j]--;}
+    }
+  }
+  screen[x/speed][y/speed]=counter;
+
+
+    x+=spdx;
+    y+=spdy;
+	ctx.fill();
+	ctx.closePath();
+  if(x==foodx && y==foody)
+{
+ score++;
+ foodx=Math.floor(Math.random() * ((canvas.width-speed)/10))*speed;
+ foody=Math.floor(Math.random() * ((canvas.height-speed)/10))*speed;
+ length++;
+ counter=length-1;
+ Spd-=difficulty;
+ if(Spd<100){Spd=100;}
+}
+ctx.font = "20px Arial";
+ctx.strokeText("Score:"+score,canvas.width-90,30);
+}
+setInterval(draw,Spd);
+
+</script>
+
+</body>
+</html>

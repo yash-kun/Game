@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<body>
+<canvas id="canvas1" width="400" height="400" style="border:5px solid #000000;"></canvas>
+<img id="pingpong" width="0" height="0" src="download2.jpg">
+
+<script type="application/javascript" language="javascript">
+var canvas= document.getElementById("canvas1");
+var ctx= canvas.getContext("2d");
+var y1=0;
+var y2=300;
+var x=40;
+var y=300;
+var spdx=10;
+var spdy=10;
+var z=100;
+var score=0;
+var img = document.getElementById("pingpong"); 
+document.addEventListener('keydown', function(event) {
+  if (event.code == 'KeyW') {
+    y2-=10;
+  }
+    if (event.code == 'KeyS') {
+    y2+=10;
+  }
+    if (event.code == 'KeyI') {
+    y1-=10;
+  }
+    if (event.code == 'KeyK') {
+    y1+=10;
+  }
+});
+
+function image(){   ctx.drawImage(img, 0, 0,400, 400);}
+function draw()
+{ 
+   ctx.clearRect(0,0,canvas.width,canvas.height); 
+    ctx.drawImage(img, 0, 0,400, 400);
+
+    if(y1<0){y1=0;}if(y1>300){y1=300;}if(y2>300){y2=300;}if(y2<0){y2=0;}
+  if(x==10||x==390){alert("Score="+score+" Press OK To play again");  y1=0;y2=300; x=40; spdx=10; spdy=10; z=100; score=0;}
+  if(y==10||y==390){spdy=-spdy;}
+  if(x==30&& y>=y2-10 && y<=y2+110)
+{
+  spdx=-spdx; z-=5; score+=5;
+}
+if(x==370&& y>=y1-10 && y<=y1+110)
+{
+   spdx=-spdx; z-=5; score+=5;
+}
+
+  x+=spdx;
+  y+=spdy;
+
+
+   
+
+
+    ctx.beginPath();   
+  ctx.fillStyle="orange";
+  ctx.arc(x,y,10,0,2*Math.PI);
+  ctx.fill();
+    ctx.closePath();
+
+    ctx.beginPath();
+  ctx.fillStyle="red";
+  ctx.fillRect(0,y2,20,100);
+  ctx.fill();
+    ctx.closePath();
+  
+  
+    ctx.beginPath();
+  ctx.fillStyle="red";
+  ctx.fillRect(380,y1,20,100-1);
+  ctx.fill();
+    ctx.closePath();
+  
+
+     
+  
+
+}
+
+setInterval(draw,z);
+</script>
+ 
+</body>
+</html>
